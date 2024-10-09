@@ -6,7 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 const generateAccessAndRefreshTokens = async (userId) => {
     try {
-        const user = User.findById(userId)
+        const user = await User.findById(userId)
 
         const accessToken = user.generateAccessToken()
         const refreshToken = user.generateRefreshToken()
@@ -104,7 +104,7 @@ const loginUser = asyncHandler( async(req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
-    const loggedInUser = User.findById(user._id).select("-password -refreshToken")
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
 
     // additional
     if(!loggedInUser) {
