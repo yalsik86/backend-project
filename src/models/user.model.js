@@ -52,6 +52,7 @@ const userSchema = new Schema(
 )
 
 userSchema.pre("save", async function (next) {
+    // if password is not modified => avoid rehashing
     if(!this.isModified("password")) return next();
     this.password = await brcypt.hash(this.password, 10)
     next()
